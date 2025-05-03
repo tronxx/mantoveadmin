@@ -175,6 +175,7 @@ constructor(
     this.almacenesSeleccionados = JSON.parse(listaalmacenes);
     this.almacenesSeleccionados .push(mialmacenseleccionado);
     localStorage.setItem('almacenesseleccionados', JSON.stringify(this.almacenesSeleccionados ));
+    localStorage.setItem('mialmacen', JSON.stringify(mialmacenseleccionado ));
     this.alerta("Se ha fijado el almacen " + mialmacen.clave + " " + mialmacen.nombre);
   }
 

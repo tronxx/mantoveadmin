@@ -91,7 +91,8 @@ export class KardexComponent {
       this.almselect = mialmacen.clave;
       let listaalmacenes = localStorage.getItem('almacenesseleccionados') || "[]";
       this.almacenesSeleccionados = JSON.parse(listaalmacenes);
-      this.almacenUnico = (listaalmacenes.length == 0);
+      this.almacenUnico = (this.almacenesSeleccionados.length < 2);
+      //this.alerta ("Es Almacen Unico: " + JSON.stringify({almacenUnico: this.almacenUnico, numeroalmacenes: this.almacenesSeleccionados.length}));
   
       this.idalm = mialmacen.id;
       this.buscar_almacen();
