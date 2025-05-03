@@ -1,0 +1,23 @@
+<mat-card class="mat-elevation-z5" style="padding: 1rem;">
+    <h2>{{titulo}}</h2>
+    <div mat-dialog-content>
+        <div>
+            <select style="width: 90%;" [(ngModel)]="almselect" >
+                <option *ngFor="let mialm of almacenesSeleccionados" value="{{mialm.id}}"
+                selected = "almselect === mialm.id">
+                    {{mialm.clave}} {{mialm.nombre}}
+                </option>
+            </select>
+    
+        </div>
+
+    </div>
+    <div mat-dialog-actions>
+        <div  style="display: flex; justify-content: center; padding-top: .5rem;">
+                <button mat-raised-button style="margin-right: 5px;"  color="warn" (click)="closeno()">Cancelar</button>
+                <span></span>
+                <button mat-raised-button  color="primary" (click)="closeYes()">Aceptar</button>
+        </div>
+    </div>
+</mat-card>
+    

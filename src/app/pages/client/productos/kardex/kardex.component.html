@@ -3,8 +3,14 @@
                 <div class="espaciado">
                     <label class="espacio" *ngIf="producto" > 
                        Producto <b> {{producto.codigo}} {{producto.descri}} </b>
+                    </label> 
+                    <label class="espacio"> 
                        Almacén  <b> {{almacen.clave}} {{almacen.nombre}}</b>
                     </label> 
+                    <button *ngIf="!almacenUnico"  class="espaciado.button" mat-raised-button color="primary" (click)="seleccionarAlamcen()" >
+                        <mat-icon aria-hidden="false" aria-label="Example new icon">search</mat-icon>
+                        Cambiar Almacén
+                    </button>             
                 </div>
                 <div mat-dialog-actions style="display: flex; justify-content: space-around; justify-items: center;">
                     <button class="espaciado.button" mat-raised-button color="primary" (click)="agregar_kardex()" >
@@ -25,7 +31,7 @@
                     </button>
                     <button class="espaciado.button" mat-raised-button color="primary" (click)="impresionKardex()">
                         <mat-icon aria-hidden="false" aria-label="Example new icon">print</mat-icon>
-                        Impresión de Kardex
+                        Impresión de Kardexx
                     </button>
                 </div>
     </div>

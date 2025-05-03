@@ -25,3 +25,17 @@ li {
 
 }
 
+.two-columns-container {
+  display: flex;
+  width: 100%;
+}
+
+.column-80 {
+  flex: 0 0 80%;  /* No grow, no shrink, 80% width */
+  /* O simplemente: width: 80%; */
+}
+
+.column-20 {
+  flex: 0 0 20%;  /* No grow, no shrink, 20% width */
+  /* O simplemente: width: 20%; */
+}

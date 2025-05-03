@@ -13,6 +13,7 @@ import { MatIcon } from '@angular/material/icon';
 import { TableOptions } from '@models/table-options';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { DlgyesnoComponent } from '@components/dlgyesno/dlgyesno.component';
+import { SelectalmacenComponent } from '@components/selectalmacen/selectalmacen.component';
 import { DlgimportarComponent } from '@components/dlgimportar/dlgimportar.component';
 import {CdkMenu, CdkMenuItem, CdkMenuTrigger} from '@angular/cdk/menu';
 import { lastValueFrom } from 'rxjs';
@@ -43,7 +44,15 @@ export class KardexComponent {
   idart = 1;
   idcia = 1;
   conserie = false;
-  
+  almacenUnico = true;
+  almselect = 0;
+
+  almacenesSeleccionados = [{
+    id: 0,
+    clave: '',
+    nombre: '',
+  }];
+    
   displayedColumns: string[] = ['fecha', 'docto', 'descri', 'folio', 'serie', 'fechasale', 'descrisale', 'options'];
   
   public headers : Array<string> = ["Fecha", "Documento", "Descripción", "Folio", "Serie", "Fecha.Sale", "Descripcion Salida"];
@@ -79,6 +88,11 @@ export class KardexComponent {
       this.iduser = micompania_z.usuario.iduser;
       this.idart = Number (String(this.router.snapshot.paramMap.get('idart')));      
       const mialmacen  = JSON.parse( localStorage.getItem('mialmacen') || "{}");
+      this.almselect = mialmacen.clave;
+      let listaalmacenes = localStorage.getItem('almacenesseleccionados') || "[]";
+      this.almacenesSeleccionados = JSON.parse(listaalmacenes);
+      this.almacenUnico = (listaalmacenes.length == 0);
+  
       this.idalm = mialmacen.id;
       this.buscar_almacen();
       this.buscar_producto();
@@ -133,11 +147,8 @@ export class KardexComponent {
     }
 
 
-    buscar_almacen() {
-      this.almacenesSerice.obten_almacen(this.idalm).subscribe( res => {
-        this.almacen = res;
-      });
-
+    async buscar_almacen() {
+      this.almacen = await lastValueFrom (this.almacenesSerice.obten_almacen(this.idalm));
     }
 
     async agregar_kardex() {
@@ -352,6 +363,26 @@ export class KardexComponent {
         }
       })
 
+    }
+
+    seleccionarAlamcen() {
+      const data = {
+        idalmacen: this.idalm,
+        titulo: "Seleccione Almacen"
+      }
+      const dialogref = this.dialog.open(SelectalmacenComponent, {
+        width:'50%',
+        data: JSON.stringify(data)
+      });
+      dialogref.afterClosed().subscribe(res => {
+        if(res) {
+          this.idalm = res.almacen;
+          const mialmacenseleccionado = this.almacenesSeleccionados.find(alm => alm.id == this.idalm);
+          this.buscar_almacen();
+          this.buscar_kardex();
+          localStorage.setItem('mialmacen', JSON.stringify(mialmacenseleccionado)); 
+        }
+      });
     }
 
     openTimedSnackBar(message: string, action: string) {

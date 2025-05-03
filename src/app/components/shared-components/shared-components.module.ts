@@ -18,6 +18,7 @@ import { DlgimportarComponent } from './dlgimportar/dlgimportar.component';
 import { PidepasswdComponent } from './pidepasswd/pidepasswd.component';
 import { PiderangofechasComponent } from './piderangofechas/piderangofechas.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SelectalmacenComponent } from './selectalmacen/selectalmacen.component';
 
 const components = [
   TableComponent,
@@ -32,6 +33,7 @@ const components = [
     DlgimportarComponent,
     PidepasswdComponent,
     PiderangofechasComponent,
+    SelectalmacenComponent,
 
   ],
   imports: [

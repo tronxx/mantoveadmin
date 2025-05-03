@@ -26,7 +26,12 @@ export class AlmacenesComponent implements OnInit {
 
 almacenes: Almacenes[] = [];
 almacen?: Almacenes;
-
+almacenesSeleccionados = [{
+  id: 0,
+  clave: '',
+  nombre: '',
+}];
+ 
 numcia = -1;
 iduser = -1;
 
@@ -63,16 +68,13 @@ constructor(
     this.obten_lista_almacenes();    
   }
 
-  obten_lista_almacenes() {
+  async obten_lista_almacenes() {
     console.log("Estoy en obten_lista_almacenes");
     //const misx = this.almacenesService.mockRequest();
-    this.almacenesService.obten_lista_almacenes(this.numcia).subscribe( res => {
-      this.almacenes = res;
+    this.almacenes = await lastValueFrom( this.almacenesService.obten_lista_almacenes(this.numcia));
+    let listaalmacenes = localStorage.getItem('almacenesseleccionados') || "[]";
+    this.almacenesSeleccionados = JSON.parse(listaalmacenes);
 
-      //this.body = res;
-      //console.log(this.almacenes);
-
-    })
   }
 
   create () {
@@ -162,11 +164,18 @@ constructor(
     });
     dialogref.afterClosed().subscribe(res => {
       if(res) {
-        const mialmacenseleccionado = { id: mialmacen.id, clave: mialmacen.clave, nombre: mialmacen.nombre};
-        localStorage.setItem('mialmacen', JSON.stringify(mialmacenseleccionado));
-        this.alerta("Se ha fijado el almacen " + mialmacen.clave + " " + mialmacen.nombre);
+        this.agregaAlmacenSeleccionado(mialmacen)
       }
     })
+  }
+
+  agregaAlmacenSeleccionado(mialmacen: Almacenes) {
+    const mialmacenseleccionado = { id: mialmacen.id, clave: mialmacen.clave, nombre: mialmacen.nombre};
+    let listaalmacenes = localStorage.getItem('almacenesseleccionados') || "[]";
+    this.almacenesSeleccionados = JSON.parse(listaalmacenes);
+    this.almacenesSeleccionados .push(mialmacenseleccionado);
+    localStorage.setItem('almacenesseleccionados', JSON.stringify(this.almacenesSeleccionados ));
+    this.alerta("Se ha fijado el almacen " + mialmacen.clave + " " + mialmacen.nombre);
   }
 
   alerta(mensaje: string) {
@@ -255,5 +264,32 @@ constructor(
     })
 
   }
+
+  desfijarAlmacen(idalm: number) {
+    const params_z = {
+      ubicacion: 'LI'
+    }
+    const dialogref = this.dialog.open(PidepasswdComponent, {
+      width: '500px',
+      height: '200px',
+      data: JSON.stringify(params_z)
+
+    });
+    dialogref.afterClosed().subscribe(res => {
+      if(res) {
+        this.eliminarAlmacendeListaPorId(idalm);
+        localStorage.setItem('almacenesseleccionados', JSON.stringify(this.almacenesSeleccionados ));
+        this.alerta("Se ha desmarcado el almacen ");
+      }
+    })
+  }
+
+  eliminarAlmacendeListaPorId(id: number): void {
+    this.almacenesSeleccionados = this.almacenesSeleccionados.filter(
+      almacen => almacen.id !== id
+    );
+  }
+
+
 
 }
