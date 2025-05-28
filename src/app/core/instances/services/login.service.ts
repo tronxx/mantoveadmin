@@ -9,7 +9,7 @@ import { Observable, lastValueFrom, of } from 'rxjs';
 })
 export class LoginService {
 
-  debug = false;
+  debug = true;
   
 constructor(
   private configService: ConfigService,

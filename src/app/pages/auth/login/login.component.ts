@@ -60,14 +60,14 @@ export class LoginComponent implements OnInit {
     const user = await this.loginService.busca_usuario(data.email, data.password).then( miuser => {
       if(this.debug) console.log('Usuario Registrado', miuser);
       let xmiuser = JSON.parse( JSON.stringify(miuser));
-      this.registro_z.usuario.idusuario = xmiuser.usuario.id,
-      this.registro_z.usuario.login = xmiuser.usuario.login,
-      this.registro_z.usuario.nombre = xmiuser.usuario.nombre;
-      this.registro_z.usuario.email = xmiuser.usuario.email;
-      this.registro_z.usuario.iniciales = xmiuser.usuario.iniciales;
-      this.registro_z.usuario.acceso  = "true";
-      this.registro_z.usuario.cia = xmiuser.usuario.cia;
-      this.registro_z.usuario.parent = xmiuser.usuario.padre;
+      this.registro_z.usuario.idusuario = xmiuser.user.id,
+      this.registro_z.usuario.login = xmiuser.user.login,
+      this.registro_z.usuario.nombre = xmiuser.user.nombre;
+      this.registro_z.usuario.email = xmiuser.user.email;
+      this.registro_z.usuario.iniciales = xmiuser.user.iniciales;
+      this.registro_z.usuario.acceso  = xmiuser.user.maestro;
+      this.registro_z.usuario.cia = xmiuser.user.cia;
+      this.registro_z.usuario.parent = xmiuser.user.padre;
       this.registro_z.token = xmiuser.token;
       
       localStorage.setItem("token", JSON.stringify( this.registro_z));
